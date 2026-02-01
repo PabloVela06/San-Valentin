@@ -31,7 +31,7 @@ if st.session_state.pos_top is not None:
 else:
     estilo_movimiento = "position: relative; transition: all 0.15s ease;"
 
-# 5. INYECCIÓN DE ESTILOS PRINCIPALES
+# 5. INYECCIÓN DE ESTILOS PRINCIPALES (CON TEXTO NEGRO FORZADO)
 st.markdown(f"""
 <style>
     /* Ocultar elementos extra */
@@ -48,7 +48,7 @@ st.markdown(f"""
         width: 100%; max-width: 1400px; padding: 2rem 0; margin: auto;
     }}
 
-    /* TARJETA CENTRAL (Columna 3) */
+    /* TARJETA CENTRAL */
     div[data-testid="stColumn"]:nth-of-type(3) {{
         background-color: #fcfcfc;
         padding: 50px;
@@ -56,9 +56,7 @@ st.markdown(f"""
         box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         border: 2px solid #ffbdd2;
         display: flex; flex-direction: column; justify-content: center; align-items: center;
-        
-        /* --- CORRECCIÓN DE COLOR AQUÍ --- */
-        color: black !important; 
+        color: black !important; /* Forzamos texto negro */
     }}
 
     /* Limpieza de estilos fantasmas */
@@ -69,35 +67,29 @@ st.markdown(f"""
 
     /* Textos (Forzamos color negro) */
     h1 {{ 
-        text-align: center !important; 
-        width: 100%; 
-        margin-bottom: 0.5rem;
-        color: black !important; /* IMPORTANTE */
+        text-align: center !important; width: 100%; margin-bottom: 0.5rem;
+        color: black !important; 
     }}
     p {{ 
-        text-align: center !important; 
-        width: 100%; 
-        font-size: 1.1rem;
-        color: #333333 !important; /* IMPORTANTE */
+        text-align: center !important; width: 100%; font-size: 1.1rem;
+        color: #333333 !important; 
     }}
     
     /* Texto de los botones */
-    button p {{
-        color: inherit !important;
-    }}
+    button p {{ color: inherit !important; }}
 
     /* Botones */
     div[data-testid="stButton"] button[kind="primary"] {{
         background-color: #FF69B4 !important; border: none !important; padding: 15px 30px !important;
         font-size: 20px !important; border-radius: 15px !important; width: 100%;
         box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
-        color: white !important; /* El texto del botón SÍ en blanco */
+        color: white !important; 
     }}
     div[data-testid="stButton"] button[kind="secondary"] {{
         {estilo_movimiento}
         background-color: #f0f2f6 !important; border: 1px solid #d6d6d8 !important;
         padding: 15px 30px !important; font-size: 20px !important; border-radius: 15px !important;
-        color: black !important; /* El texto del botón NO en negro */
+        color: black !important; 
     }}
 </style>
 """, unsafe_allow_html=True)
@@ -110,6 +102,7 @@ with col_cen:
             <img src="https://media1.tenor.com/m/X1XlcJhJPZUAAAAC/love.gif" width="250" style="border-radius: 10px; display: block;"></div>""", unsafe_allow_html=True)
     st.title("¿Quieres ser mi San Valentín? 🌹")
     
+    # LÓGICA DEL TEXTO
     if st.session_state.si:
         st.write("¡SABÍA QUE DIRÍAS QUE SÍ! Te quiero mucho muchito ❤️")
     elif st.session_state.pos_top is not None:
@@ -118,19 +111,20 @@ with col_cen:
         st.write("Espero que digas que sí 🥰")
     st.write("") 
     
-    btn_si, btn_no = st.columns(2)
-    with btn_si:
-        if st.button("¡SÍ!💖", type="primary"):
-            st.balloons()
-            st.session_state.pos_top = None; st.session_state.pos_left = None
-            st.session_state.si = True
-            st.rerun()
-    with btn_no:
-        if st.button("No...🥀", on_click=mover_boton): pass
+    # Los botones SOLO se muestran si NO ha dicho que sí todavía.
+    if not st.session_state.si:
+        btn_si, btn_no = st.columns(2)
+        with btn_si:
+            if st.button("¡SÍ!💖", type="primary"):
+                st.balloons()
+                st.session_state.pos_top = None; st.session_state.pos_left = None
+                st.session_state.si = True
+                st.rerun()
+        with btn_no:
+            if st.button("No...🥀", on_click=mover_boton): pass
 
 # 7. ZONA DE GATITOS
 if st.session_state.si:
-    # Definimos el estilo de la tarjeta aquí para usarlo en los dos gatos
     estilo_tarjeta_gato = """
         background-color: #fcfcfc; 
         padding: 20px; 
