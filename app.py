@@ -56,6 +56,9 @@ st.markdown(f"""
         box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         border: 2px solid #ffbdd2;
         display: flex; flex-direction: column; justify-content: center; align-items: center;
+        
+        /* --- CORRECCIÓN DE COLOR AQUÍ --- */
+        color: black !important; 
     }}
 
     /* Limpieza de estilos fantasmas */
@@ -64,21 +67,37 @@ st.markdown(f"""
         border: none !important; padding: 0 !important;
     }}
 
-    /* Textos */
-    h1 {{ text-align: center !important; width: 100%; margin-bottom: 0.5rem; }}
-    p {{ text-align: center !important; width: 100%; font-size: 1.1rem; }}
+    /* Textos (Forzamos color negro) */
+    h1 {{ 
+        text-align: center !important; 
+        width: 100%; 
+        margin-bottom: 0.5rem;
+        color: black !important; /* IMPORTANTE */
+    }}
+    p {{ 
+        text-align: center !important; 
+        width: 100%; 
+        font-size: 1.1rem;
+        color: #333333 !important; /* IMPORTANTE */
+    }}
+    
+    /* Texto de los botones */
+    button p {{
+        color: inherit !important;
+    }}
 
     /* Botones */
     div[data-testid="stButton"] button[kind="primary"] {{
         background-color: #FF69B4 !important; border: none !important; padding: 15px 30px !important;
         font-size: 20px !important; border-radius: 15px !important; width: 100%;
         box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
+        color: white !important; /* El texto del botón SÍ en blanco */
     }}
     div[data-testid="stButton"] button[kind="secondary"] {{
         {estilo_movimiento}
         background-color: #f0f2f6 !important; border: 1px solid #d6d6d8 !important;
         padding: 15px 30px !important; font-size: 20px !important; border-radius: 15px !important;
-        color: black !important;
+        color: black !important; /* El texto del botón NO en negro */
     }}
 </style>
 """, unsafe_allow_html=True)
@@ -92,7 +111,7 @@ with col_cen:
     st.title("¿Quieres ser mi San Valentín? 🌹")
     
     if st.session_state.si:
-        st.info("¡SABÍA QUE DIRÍAS QUE SÍ! Te quiero mucho muchito ❤️")
+        st.write("¡SABÍA QUE DIRÍAS QUE SÍ! Te quiero mucho muchito ❤️")
     elif st.session_state.pos_top is not None:
         st.write("Uy no te he entendido bien, prueba otra vez 😋")
     else:
@@ -109,11 +128,9 @@ with col_cen:
     with btn_no:
         if st.button("No...🥀", on_click=mover_boton): pass
 
-# 7. ZONA DE GATITOS (NUEVA ESTRATEGIA: TARJETA HTML MANUAL)
+# 7. ZONA DE GATITOS
 if st.session_state.si:
     # Definimos el estilo de la tarjeta aquí para usarlo en los dos gatos
-    # padding: 20px EXACTOS por todos lados.
-    # line-height: 0 elimina cualquier espacio fantasma de texto.
     estilo_tarjeta_gato = """
         background-color: #fcfcfc; 
         padding: 20px; 
@@ -126,7 +143,6 @@ if st.session_state.si:
     """
 
     with col_izq:
-        # Gato Izquierda
         st.markdown(f"""
             <div style="{estilo_tarjeta_gato}">
                 <img src="https://media1.tenor.com/m/HKLQMQlHz6gAAAAC/cat.gif" width="350" style="border-radius: 10px; display: block;">
@@ -134,7 +150,6 @@ if st.session_state.si:
         """, unsafe_allow_html=True)
         
     with col_der:
-        # Gato Derecha (con espejo)
         st.markdown(f"""
             <div style="{estilo_tarjeta_gato}">
                 <img src="https://media1.tenor.com/m/HKLQMQlHz6gAAAAC/cat.gif" width="350" style="border-radius: 10px; display: block; transform: scaleX(-1);">
